@@ -1086,30 +1086,68 @@ fbq('track', 'ViewContent', {
     var fecha = ahora.toLocaleDateString('es-CO') + ' ' + ahora.toLocaleTimeString('es-CO');
 
     // Enviar a Google Sheets via iframe (funciona en móvil y PC sin CORS)
+    // Generar links de WhatsApp
+    var celularLimpio = '57' + celular.replace(/\D/g,'');
+    var ciudadCompleta = ciudad + ' - ' + municipio;
+
+    var msg1 =
+      'Hola ' + nombre + ',\n' +
+      'Soy Natalia del equipo NOVA.\n\n' +
+      'Recibimos tu pedido con exito!\n\n' +
+      'Producto: ' + producto + '\n' +
+      'Total: $' + parseInt(precio).toLocaleString('es-CO') + ' en efectivo\n' +
+      'Direccion: ' + direccion + ', ' + ciudadCompleta + '\n\n' +
+      'Tu pedido llega en 3 a 5 dias habiles.\n' +
+      'El transportador te avisara antes de llegar.\n' +
+      'Ten el dinero EXACTO al momento de la entrega.\n\n' +
+      'Confirmamos tu pedido?\n' +
+      'Responde SI para confirmar\n' +
+      'Responde NO para cancelar\n\n' +
+      'Gracias por elegir NOVA!';
+
+    var msg2 =
+      'Gracias por confirmar tu pedido!\n\n' +
+      'Recibiras tu pedido en los proximos 3 a 5 dias habiles.\n' +
+      'La entrega sera entre 8am y 10pm.\n' +
+      'El repartidor te contactara por WhatsApp o llamada antes de llegar.\n' +
+      'El pago es en EFECTIVO con MONTO EXACTO.\n' +
+      'En unos minutos recibiras tu numero de guia para rastrear tu pedido.\n\n' +
+      'Gracias por elegir NOVA!';
+
+    var link1 = 'https://wa.me/' + celularLimpio + '?text=' + encodeURIComponent(msg1);
+    var link2 = 'https://wa.me/' + celularLimpio + '?text=' + encodeURIComponent(msg2);
+
     var formData = new FormData();
     formData.append('access_key', '10dc43cb-e5a6-4e04-853f-e1cd2bcba548');
     formData.append('subject',    'Nuevo pedido NOVA - ' + nombre);
-    formData.append('fecha',      fecha);
     formData.append('nombre',     nombre);
     formData.append('celular',    celular);
-    formData.append('ciudad',     ciudad + ' - ' + municipio);
+    formData.append('ciudad',     ciudadCompleta);
     formData.append('direccion',  direccion);
     formData.append('producto',   producto);
     formData.append('precio',     '$' + parseInt(precio).toLocaleString('es-CO'));
-    formData.append('estado',     'Pendiente');
+    formData.append('fecha',      fecha);
+    formData.append('message',
+      '----------------------------------------\n' +
+      'PASO 1 - Envia este mensaje al cliente:\n' +
+      link1 + '\n\n' +
+      'PASO 2 - Cuando confirme, envia este:\n' +
+      link2 + '\n' +
+      '----------------------------------------'
+    );
 
-    // LLAMADA 1: Web3Forms → Gmail confiable en todos los dispositivos
+    // Web3Forms → Gmail con datos + links WhatsApp
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       body: formData
     }).catch(function(){});
 
-    // LLAMADA 2: Apps Script → Google Sheets + links WhatsApp
+    // Apps Script → Google Sheets (respaldo)
     var params = new URLSearchParams({
       fecha:      fecha,
       nombre:     nombre,
       celular:    celular,
-      ciudad:     ciudad + ' - ' + municipio,
+      ciudad:     ciudadCompleta,
       direccion:  direccion,
       producto:   producto,
       precio:     '$' + parseInt(precio).toLocaleString('es-CO'),
