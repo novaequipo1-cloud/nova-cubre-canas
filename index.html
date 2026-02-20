@@ -1045,7 +1045,7 @@ fbq('track', 'ViewContent', {
   // Reemplaza esta URL con la que obtengas de
   // tu Google Apps Script al publicarlo
   // =============================================
-  var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwnmrw74bD7Bb-X2NlJpsFj2M3TANsvKfR-Z-xUvothrFAdSnwQ7vzg3m2hk985HuD0/exec';
+  var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzmPBw-9JKYFj3TNZvEedYjooJfdbsUwDS8yDQLbRNrnfHyB4u5x4JYLjIRcEP_m8la/exec';
 
   // =============================================
   // SELECCIONAR PRODUCTO
@@ -1097,19 +1097,22 @@ fbq('track', 'ViewContent', {
       estado:     'Pendiente'
     });
 
-    // Envío múltiple para máxima compatibilidad móvil y PC
     var url = SHEETS_URL + '?' + params.toString();
 
-    // Método 1: fetch
+    // Método 1: fetch GET (Chrome, Edge, Android)
     fetch(url, { method: 'GET', mode: 'no-cors' })
       .catch(function(){});
 
-    // Método 2: imagen de respaldo
-    var img = new Image();
-    img.src = url;
+    // Método 2: fetch POST (iOS Safari)
+    fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
+    }).catch(function(){});
 
-    // Mostrar éxito después de 1.5s
-    setTimeout(function() { mostrarExito(); }, 1500);
+    // Mostrar éxito después de 2s
+    setTimeout(function() { mostrarExito(); }, 2000);
   }
 
   function mostrarExito() {
