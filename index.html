@@ -1087,27 +1087,25 @@ fbq('track', 'ViewContent', {
 
     // Enviar a Google Sheets via iframe (funciona en móvil y PC sin CORS)
     var formData = new FormData();
-    formData.append('fecha',     fecha);
-    formData.append('nombre',    nombre);
-    formData.append('celular',   celular);
-    formData.append('ciudad',    ciudad + ' - ' + municipio);
-    formData.append('direccion', direccion);
-    formData.append('producto',  producto);
-    formData.append('precio',    '$' + parseInt(precio).toLocaleString('es-CO'));
-    formData.append('estado',    'Pendiente');
+    formData.append('access_key', '10dc43cb-e5a6-4e04-853f-e1cd2bcba548');
+    formData.append('subject',    'Nuevo pedido NOVA - ' + nombre);
+    formData.append('fecha',      fecha);
+    formData.append('nombre',     nombre);
+    formData.append('celular',    celular);
+    formData.append('ciudad',     ciudad + ' - ' + municipio);
+    formData.append('direccion',  direccion);
+    formData.append('producto',   producto);
+    formData.append('precio',     '$' + parseInt(precio).toLocaleString('es-CO'));
+    formData.append('estado',     'Pendiente');
 
-    // Formspree – funciona en todos los navegadores y móviles
-    fetch('https://formspree.io/f/xlgwwzpv', {
+    // Web3Forms – gratis, sin restricciones de dominio
+    fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
+      body: formData
     })
-    .then(function(response) {
-      if (response.ok) {
-        mostrarExito();
-      } else {
-        mostrarExito(); // Mostrar éxito igual para no confundir al cliente
-      }
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      mostrarExito();
     })
     .catch(function() {
       mostrarExito();
