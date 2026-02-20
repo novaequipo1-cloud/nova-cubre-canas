@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- ======= META PIXEL ======= -->
+<!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -12,20 +12,13 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1970298330187730');
+fbq('init', '2937373643138468');
 fbq('track', 'PageView');
-fbq('track', 'ViewContent', {
-  content_ids: ['NOVA-001'],
-  content_type: 'product',
-  currency: 'COP',
-  value: 89500
-});
 </script>
-<noscript>
-  <img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=1970298330187730&ev=PageView&noscript=1"/>
-</noscript>
-<!-- FIN META PIXEL -->
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2937373643138468&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NOVA – Color y Brillo Natural | Desde el 1er Lavado</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -1016,15 +1009,10 @@ fbq('track', 'ViewContent', {
   }
 
   function mostrarExito() {
-    // META PIXEL – PURCHASE: usa content_id genérico, sin términos de salud
     try {
-      var precio   = document.getElementById('f_precio').value;
-      var prodId   = document.getElementById('f_precio').value === '89500' ? 'NOVA-002' : 'NOVA-001';
       fbq('track', 'Purchase', {
-        value:        parseFloat(precio),
-        currency:     'COP',
-        content_ids:  [prodId],
-        content_type: 'product'
+        value: parseFloat(document.getElementById('f_precio').value),
+        currency: 'COP'
       });
     } catch(err) {}
 
